@@ -44,13 +44,17 @@ function queryString(params: Record<string, QueryValue>): string {
   return result ? `?${result}` : ''
 }
 
+const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || ''
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers)
   if (!(init?.body instanceof FormData) && init?.body !== undefined) {
     headers.set('Content-Type', 'application/json')
   }
 
-  const response = await fetch(`/api${path}`, {
+  const url = API_BASE ? `${API_BASE}/api${path}` : `/api${path}`
+
+  const response = await fetch(url, {
     credentials: 'include',
     ...init,
     headers,
