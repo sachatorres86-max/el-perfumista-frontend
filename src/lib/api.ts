@@ -44,7 +44,8 @@ function queryString(params: Record<string, QueryValue>): string {
   return result ? `?${result}` : ''
 }
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || ''
+const envUrl = (import.meta as unknown as { env?: { VITE_API_URL?: string } }).env?.VITE_API_URL
+const API_BASE = envUrl?.replace(/\/+$/, '') || ''
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers)
