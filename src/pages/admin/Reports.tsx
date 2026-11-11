@@ -39,27 +39,27 @@ export function Reports() {
     tipo: 'inventario' | 'agotados' | 'stock_bajo' | 'movimientos' | 'cotizaciones',
   ) => {
     window.location.href = api.admin.exportUrl(tipo, periodo)
-    toast('Descargando reporte…', 'info')
+    toast('Generando reporte PDF…', 'info')
   }
 
   return (
     <>
       <PageHeader
         title="Reportes"
-        description="Actividad del período, alertas de stock y exportación en CSV."
+        description="Actividad del período, alertas de stock y exportación en PDF."
         actions={
           <>
             <Button variant="outline" onClick={() => download('inventario')}>
               <Download className="h-4 w-4" />
-              Inventario
+              Inventario PDF
             </Button>
             <Button variant="outline" onClick={() => download('stock_bajo')}>
               <Download className="h-4 w-4" />
-              Stock bajo
+              Stock bajo PDF
             </Button>
             <Button variant="outline" onClick={() => download('agotados')}>
               <Download className="h-4 w-4" />
-              Agotados
+              Agotados PDF
             </Button>
           </>
         }
@@ -88,11 +88,11 @@ export function Reports() {
           </Select>
           <Button variant="outline" onClick={() => download('movimientos')}>
             <Download className="h-4 w-4" />
-            Movimientos CSV
+            Movimientos PDF
           </Button>
           <Button variant="outline" onClick={() => download('cotizaciones')}>
             <Download className="h-4 w-4" />
-            Cotizaciones CSV
+            Cotizaciones PDF
           </Button>
         </div>
       </Card>
@@ -186,14 +186,21 @@ export function Reports() {
               ) : (
                 <ul className="mt-4 divide-y divide-sand-200">
                   {data.out_of_stock_presentations.map((item) => (
-                    <li key={item.presentation_id} className="flex items-center justify-between py-2.5">
-                      <div>
-                        <p className="text-sm font-semibold text-ink">{item.product_name}</p>
+                    <li
+                      key={item.presentation_id}
+                      className="flex items-center justify-between gap-3 py-2.5"
+                    >
+                      <div className="min-w-0">
+                        <p className="break-words text-sm font-semibold text-ink">
+                          {item.product_name}
+                        </p>
                         <p className="text-[11px] text-ink-muted">
                           {item.sku} · {item.volume_ml} ml
                         </p>
                       </div>
-                      <Badge tone="danger">0 disponibles</Badge>
+                      <Badge tone="danger" className="shrink-0">
+                        0 disponibles
+                      </Badge>
                     </li>
                   ))}
                 </ul>
@@ -218,13 +225,15 @@ export function Reports() {
                       {data.low_stock_presentations.map((item) => (
                         <li
                           key={item.presentation_id}
-                          className="flex items-center justify-between py-2"
+                          className="flex items-center justify-between gap-3 py-2"
                         >
-                          <div>
-                            <p className="text-sm font-semibold text-ink">{item.product_name}</p>
+                          <div className="min-w-0">
+                            <p className="break-words text-sm font-semibold text-ink">
+                              {item.product_name}
+                            </p>
                             <p className="text-[11px] text-ink-muted">{item.volume_ml} ml</p>
                           </div>
-                          <span className="text-xs font-semibold text-amber-600">
+                          <span className="shrink-0 text-xs font-semibold text-amber-600">
                             {item.stock} / mín. {item.min_stock}
                           </span>
                         </li>
@@ -240,12 +249,17 @@ export function Reports() {
                     </p>
                     <ul className="divide-y divide-sand-200">
                       {data.low_stock_supplies.map((item) => (
-                        <li key={item.supply_id} className="flex items-center justify-between py-2">
-                          <div>
-                            <p className="text-sm font-semibold text-ink">{item.name}</p>
+                        <li
+                          key={item.supply_id}
+                          className="flex items-center justify-between gap-3 py-2"
+                        >
+                          <div className="min-w-0">
+                            <p className="break-words text-sm font-semibold text-ink">
+                              {item.name}
+                            </p>
                             <p className="text-[11px] text-ink-muted">{item.sku}</p>
                           </div>
-                          <span className="text-xs font-semibold text-amber-600">
+                          <span className="shrink-0 text-xs font-semibold text-amber-600">
                             {item.stock} {item.unit} / mín. {item.min_stock}
                           </span>
                         </li>

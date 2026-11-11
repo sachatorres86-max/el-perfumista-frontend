@@ -126,14 +126,14 @@ export function Quotes() {
                       key={item.id}
                       className="flex flex-wrap items-center justify-between gap-2 py-2.5 text-sm"
                     >
-                      <div>
-                        <p className="font-semibold text-ink">{item.product_name}</p>
+                      <div className="min-w-0">
+                        <p className="break-words font-semibold text-ink">{item.product_name}</p>
                         <p className="text-[11px] text-ink-muted">
                           {item.volume_ml} ml
                           {item.bottle_type ? ` · ${item.bottle_type}` : ''}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className="shrink-0 text-right">
                         <p className="text-xs text-ink-muted">
                           {item.quantity} × {formatCOP(item.unit_price_cop)}
                         </p>

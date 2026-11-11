@@ -24,6 +24,7 @@ import type {
   ReportPeriod,
   ReportSummary,
   SharedCart,
+  SharedCartStatus,
   Supply,
   SupplyInput,
   User,
@@ -113,6 +114,8 @@ export const api = {
   product: (slug: string) => request<ProductDetail>(`/productos/${encodeURIComponent(slug)}`),
   sharedCart: (token: string) =>
     request<SharedCart>(`/cotizaciones/${encodeURIComponent(token)}`),
+  sharedCartStatus: (token: string) =>
+    request<SharedCartStatus>(`/cotizaciones/${encodeURIComponent(token)}/estado`),
 
   auth: {
     login: (email: string, password: string) =>

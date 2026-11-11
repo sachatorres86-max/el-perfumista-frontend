@@ -173,10 +173,10 @@ export function SharedCart() {
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
+                      <div className="min-w-0">
                         <Link
                           to={`/producto/${line.product_slug}`}
-                          className="font-display text-xl leading-tight text-ink hover:text-brand-700"
+                          className="break-words font-display text-xl leading-tight text-ink hover:text-brand-700"
                         >
                           {line.product_name}
                         </Link>

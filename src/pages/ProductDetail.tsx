@@ -308,7 +308,7 @@ export function ProductDetailPage() {
                   href={whatsappLink(config.whatsapp_primary, message)}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex h-13 flex-1 items-center justify-center gap-2 rounded-full bg-accent-600 px-6 text-sm font-bold text-white shadow-lg shadow-accent-600/25 transition hover:bg-accent-700"
+                  className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 text-sm font-bold text-white shadow-lg shadow-accent-600/25 transition hover:bg-accent-700 sm:flex-1"
                 >
                   <MessageCircle className="h-4 w-4" />
                   Consultar por WhatsApp
@@ -316,7 +316,7 @@ export function ProductDetailPage() {
                 <button
                   type="button"
                   onClick={share}
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-full border border-sand-300 px-5 text-sm font-semibold text-ink transition hover:border-brand-400 hover:text-brand-700"
+                  className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full border border-sand-300 px-5 text-sm font-semibold text-ink transition hover:border-brand-400 hover:text-brand-700 sm:w-auto"
                 >
                   <Share2 className="h-4 w-4" />
                   Compartir

@@ -149,6 +149,12 @@ export interface SharedCart {
 
 export type QuoteStatus = 'confirmada' | 'cancelada'
 
+export interface SharedCartStatus {
+  confirmada: boolean
+  estado: QuoteStatus | null
+  quote_id: number | null
+}
+
 export interface QuoteItem {
   id: number
   presentation_id: number | null

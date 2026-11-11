@@ -42,15 +42,19 @@ export function Header() {
 
       <div className="glass border-b border-sand-200/80">
         <div className="container-page flex h-[72px] items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-3" aria-label="El Perfumista Rubio, inicio">
-            <span className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-brand-400/40">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2.5 sm:gap-3"
+            aria-label="El Perfumista Rubio, inicio"
+          >
+            <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-brand-400/40 sm:h-12 sm:w-12">
               <img src="/logo.png" alt="Logo de El Perfumista Rubio" className="h-full w-full object-cover" />
             </span>
-            <span className="leading-none">
-              <span className="block font-display text-xl font-semibold tracking-tight text-ink">
+            <span className="min-w-0 leading-none">
+              <span className="block truncate font-display text-lg font-semibold tracking-tight text-ink sm:text-xl">
                 El Perfumista
               </span>
-              <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-700">
+              <span className="mt-1 hidden text-[10px] font-semibold uppercase tracking-[0.28em] text-brand-700 sm:block">
                 Rubio · Perfumería
               </span>
             </span>
@@ -76,7 +80,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             {user?.role === 'cliente' && (
               <Link
                 to="/carrito"
@@ -115,7 +119,7 @@ export function Header() {
 
       {open && (
         <div className="border-b border-sand-200 bg-white shadow-xl lg:hidden">
-          <nav className="container-page flex flex-col gap-1 py-4">
+          <nav className="container-page flex max-h-[calc(100dvh-100px)] flex-col gap-1 overflow-y-auto py-4">
             {NAV.map((item) => (
               <NavLink
                 key={item.to}
