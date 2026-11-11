@@ -1,12 +1,17 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
+  Activity,
   AlertTriangle,
+  ArrowUpRight,
+  ClipboardCheck,
   Download,
   DollarSign,
   Package,
   TrendingUp,
 } from 'lucide-react'
 import { api } from '../../lib/api'
+import type { ReportPeriod } from '../../lib/types'
 import { formatCOP, formatNumber } from '../../lib/format'
 import { useToast } from '../../components/Toast'
 import {
@@ -15,6 +20,7 @@ import {
   Card,
   EmptyState,
   PageHeader,
+  Select,
   Skeleton,
   StatCard,
 } from '../../components/ui'
@@ -22,14 +28,17 @@ import { cn } from '../../lib/cn'
 
 export function Reports() {
   const { toast } = useToast()
+  const [periodo, setPeriodo] = useState<ReportPeriod>('mensual')
 
   const { data, isLoading } = useQuery({
-    queryKey: ['report-summary'],
-    queryFn: api.admin.reportSummary,
+    queryKey: ['report-summary', periodo],
+    queryFn: () => api.admin.reportSummary(periodo),
   })
 
-  const download = (tipo: 'inventario' | 'agotados' | 'stock_bajo') => {
-    window.location.href = api.admin.exportUrl(tipo)
+  const download = (
+    tipo: 'inventario' | 'agotados' | 'stock_bajo' | 'movimientos' | 'cotizaciones',
+  ) => {
+    window.location.href = api.admin.exportUrl(tipo, periodo)
     toast('Descargando reporte…', 'info')
   }
 
@@ -37,7 +46,7 @@ export function Reports() {
     <>
       <PageHeader
         title="Reportes"
-        description="Alertas de stock, valor del inventario y exportación en CSV."
+        description="Actividad del período, alertas de stock y exportación en CSV."
         actions={
           <>
             <Button variant="outline" onClick={() => download('inventario')}>
@@ -56,6 +65,38 @@ export function Reports() {
         }
       />
 
+      <Card className="mb-5 p-4">
+        <div className="grid gap-3 lg:grid-cols-[1fr_220px_auto_auto] lg:items-end">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
+              Período del reporte
+            </p>
+            <p className="mt-1 text-sm text-ink-muted">
+              {data
+                ? `${data.period_label}: actividad registrada desde el inicio del período.`
+                : 'Selecciona el período de visualización y exportación.'}
+            </p>
+          </div>
+          <Select
+            value={periodo}
+            onChange={(event) => setPeriodo(event.target.value as ReportPeriod)}
+            aria-label="Período del reporte"
+          >
+            <option value="diario">Diario</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensual">Mensual</option>
+          </Select>
+          <Button variant="outline" onClick={() => download('movimientos')}>
+            <Download className="h-4 w-4" />
+            Movimientos CSV
+          </Button>
+          <Button variant="outline" onClick={() => download('cotizaciones')}>
+            <Download className="h-4 w-4" />
+            Cotizaciones CSV
+          </Button>
+        </div>
+      </Card>
+
       {isLoading || !data ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
@@ -64,6 +105,39 @@ export function Reports() {
         </div>
       ) : (
         <>
+          <h2 className="mb-3 text-xl text-ink">Actividad del período</h2>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              label="Movimientos"
+              value={formatNumber(data.activity.movements_total)}
+              hint={`${formatNumber(data.activity.entries_units)} entradas · ${formatNumber(data.activity.exits_units)} salidas`}
+              icon={<Activity className="h-5 w-5" />}
+              tone="brand"
+            />
+            <StatCard
+              label="Salidas de inventario"
+              value={formatNumber(data.activity.exits_units)}
+              hint="Unidades descontadas en el período"
+              icon={<ArrowUpRight className="h-5 w-5" />}
+              tone="rose"
+            />
+            <StatCard
+              label="Cotizaciones confirmadas"
+              value={formatNumber(data.activity.quotes_confirmed)}
+              hint={`${formatNumber(data.activity.quotes_cancelled)} canceladas`}
+              icon={<ClipboardCheck className="h-5 w-5" />}
+              tone="emerald"
+            />
+            <StatCard
+              label="Total cotizado"
+              value={formatCOP(data.activity.quotes_total_cop)}
+              hint={`${formatNumber(data.activity.quotes_units)} unidades confirmadas`}
+              icon={<DollarSign className="h-5 w-5" />}
+              tone="accent"
+            />
+          </div>
+
+          <h2 className="mb-3 mt-7 text-xl text-ink">Estado actual del inventario</h2>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <StatCard
               label="Valor total"
