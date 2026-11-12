@@ -111,7 +111,7 @@ export function AdminLayout() {
           </button>
         </div>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-5">
+        <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-5">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -132,7 +132,7 @@ export function AdminLayout() {
           ))}
         </nav>
 
-        <div className="border-t border-white/10 p-4">
+        <div className="sticky bottom-0 z-10 shrink-0 border-t border-white/10 bg-ink p-4 shadow-[0_-8px_24px_rgba(0,0,0,0.2)]">
           <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-ink">
               {initials(user.name)}

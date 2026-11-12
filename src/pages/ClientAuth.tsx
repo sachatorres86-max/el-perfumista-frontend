@@ -8,6 +8,13 @@ import { Button, Card, Field, Input, Spinner } from '../components/ui'
 
 type Mode = 'login' | 'register'
 
+function sanitizeName(value: string): string {
+  return value
+    .normalize('NFC')
+    .replace(/[^\p{L}\s]/gu, '')
+    .replace(/\s+/g, ' ')
+}
+
 function SessionCard() {
   const { user, logout } = useAuth()
   const { toast } = useToast()
@@ -107,6 +114,12 @@ function ClientAuthForm({ mode }: { mode: Mode }) {
     event.preventDefault()
     setError('')
 
+    const cleanName = sanitizeName(name).trim()
+    if (isRegister && cleanName.length < 2) {
+      setError('Escribe tu nombre usando solo letras y espacios.')
+      return
+    }
+
     if (isRegister && password !== confirmPassword) {
       setError('Las contraseñas no coinciden')
       return
@@ -115,7 +128,7 @@ function ClientAuthForm({ mode }: { mode: Mode }) {
     setSubmitting(true)
     try {
       if (isRegister) {
-        const current = await register({ name: name.trim(), email: email.trim(), password })
+        const current = await register({ name: cleanName, email: email.trim(), password })
         toast(`Bienvenida, ${current.name}`, 'success')
       } else {
         const current = await login(email.trim(), password)
@@ -159,12 +172,16 @@ function ClientAuthForm({ mode }: { mode: Mode }) {
 
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             {isRegister && (
-              <Field label="Nombre completo" required>
+              <Field
+                label="Nombre completo"
+                required
+                hint="Solo se permiten letras y espacios."
+              >
                 <div className="relative">
                   <UserRound className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
                   <Input
                     value={name}
-                    onChange={(event) => setName(event.target.value)}
+                    onChange={(event) => setName(sanitizeName(event.target.value))}
                     placeholder="Tu nombre"
                     autoComplete="name"
                     minLength={2}
