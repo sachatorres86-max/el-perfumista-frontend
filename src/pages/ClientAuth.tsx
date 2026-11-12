@@ -62,7 +62,7 @@ function SessionCard() {
 }
 
 function ClientAuthForm({ mode }: { mode: Mode }) {
-  const { user, loading, login, register } = useAuth()
+  const { user, loading, login, logout, register } = useAuth()
   const navigate = useNavigate()
   const { toast } = useToast()
   const [name, setName] = useState('')
@@ -112,7 +112,8 @@ function ClientAuthForm({ mode }: { mode: Mode }) {
       } else {
         const current = await login(email.trim(), password)
         if (current.role !== 'cliente') {
-          navigate('/admin', { replace: true })
+          await logout()
+          setError('Esta cuenta es de personal. Usa el acceso interno.')
           return
         }
         toast(`Bienvenida, ${current.name}`, 'success')

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ClipboardCheck,
   Clock,
+  MessageCircle,
   Minus,
   Plus,
   ShoppingBag,
@@ -16,10 +17,11 @@ import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { useSiteConfig } from '../context/SiteConfigContext'
 import { useToast } from '../components/Toast'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { CART_STATUS_LABEL, CART_STATUS_TONE } from '../lib/cartStatus'
-import { formatDate } from '../lib/format'
+import { formatDate, whatsappLink } from '../lib/format'
 import type { OrderCreated } from '../lib/types'
 import { ProductImage } from '../components/ProductImage'
 import { Badge, Button, Card, EmptyState, Skeleton } from '../components/ui'
@@ -27,6 +29,7 @@ import { Badge, Button, Card, EmptyState, Skeleton } from '../components/ui'
 export function Cart() {
   const { user, loading: authLoading } = useAuth()
   const { items, ready, totalUnits, increment, decrement, removeItem, clear } = useCart()
+  const { config } = useSiteConfig()
   const { toast } = useToast()
   const [placedOrder, setPlacedOrder] = useState<OrderCreated | null>(null)
 

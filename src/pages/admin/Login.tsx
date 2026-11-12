@@ -7,7 +7,7 @@ import { useToast } from '../../components/Toast'
 import { Button, Field, Input, Spinner } from '../../components/ui'
 
 export function Login() {
-  const { user, loading, login } = useAuth()
+  const { user, loading, login, logout } = useAuth()
   const navigate = useNavigate()
   const { toast } = useToast()
   const [email, setEmail] = useState('')
@@ -35,8 +35,8 @@ export function Login() {
     try {
       const current = await login(email.trim(), password)
       if (current.role === 'cliente') {
-        toast('Esta cuenta es de cliente. Usa el acceso de clientes.', 'info')
-        navigate('/cuenta/ingresar', { replace: true })
+        await logout()
+        setError('Esta cuenta es de cliente. Usa el acceso de clientes.')
         return
       }
       toast(`Bienvenido, ${current.name}`)
