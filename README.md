@@ -7,3 +7,4 @@ aplicar el fallback de la aplicación (`/index.html`). Así, las llamadas del
 navegador pueden seguir mostrando el dominio de Vercel en Network, pero sus
 respuestas provienen del backend; las imágenes también se sirven desde Render.
 Después de cambiar estas reglas, despliega de nuevo el proyecto en Vercel."
+ 
