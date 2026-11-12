@@ -16,6 +16,7 @@ const ClientRegister = lazy(() =>
   import('./pages/ClientAuth').then((module) => ({ default: module.ClientRegister })),
 )
 const Cart = lazy(() => import('./pages/Cart').then((module) => ({ default: module.Cart })))
+const Orders = lazy(() => import('./pages/Orders').then((module) => ({ default: module.Orders })))
 const NotFound = lazy(() => import('./pages/NotFound').then((module) => ({ default: module.NotFound })))
 
 const AdminLayout = lazy(() =>
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="cuenta/ingresar" element={<ClientLogin />} />
           <Route path="cuenta/registro" element={<ClientRegister />} />
           <Route path="carrito" element={<Cart />} />
+          <Route path="cuenta/pedidos" element={<Orders />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
