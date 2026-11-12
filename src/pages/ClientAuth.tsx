@@ -45,12 +45,20 @@ function SessionCard() {
             Ir al panel interno
           </Link>
         ) : (
-          <Link
-            to="/catalogo"
-            className="flex w-full items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink-soft"
-          >
-            Explorar el catálogo
-          </Link>
+          <>
+            <Link
+              to="/cuenta/pedidos"
+              className="flex w-full items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink-soft"
+            >
+              Seguir mis pedidos
+            </Link>
+            <Link
+              to="/catalogo"
+              className="flex w-full items-center justify-center rounded-full border border-sand-300 px-5 py-3 text-sm font-semibold text-ink transition hover:bg-sand-100"
+            >
+              Explorar el catálogo
+            </Link>
+          </>
         )}
         <Button variant="outline" className="w-full" onClick={handleLogout}>
           <LogOut className="h-4 w-4" />

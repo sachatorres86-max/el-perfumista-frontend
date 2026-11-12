@@ -12,7 +12,6 @@ const NAV = [
   { to: '/catalogo', label: 'Catálogo' },
   { to: '/#nosotros', label: 'Nosotros' },
   { to: '/contacto', label: 'Contacto' },
-  { to: '/cuenta/ingresar', label: 'Mi cuenta' },
 ]
 
 export function Header() {
@@ -30,6 +29,13 @@ export function Header() {
     config.whatsapp_primary,
     'Hola, quisiera consultar el catálogo de El Perfumista Rubio.',
   )
+  const navItems = [
+    ...NAV,
+    {
+      to: user?.role === 'cliente' ? '/cuenta/pedidos' : '/cuenta/ingresar',
+      label: user?.role === 'cliente' ? 'Mis pedidos' : 'Mi cuenta',
+    },
+  ]
 
   return (
     <header className="sticky top-0 z-50">
@@ -61,7 +67,7 @@ export function Header() {
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex">
-            {NAV.map((item) => (
+            {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
@@ -120,7 +126,7 @@ export function Header() {
       {open && (
         <div className="border-b border-sand-200 bg-white shadow-xl lg:hidden">
           <nav className="container-page flex max-h-[calc(100dvh-100px)] flex-col gap-1 overflow-y-auto py-4">
-            {NAV.map((item) => (
+            {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}

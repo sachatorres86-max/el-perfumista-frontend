@@ -128,6 +128,10 @@ export const api = {
   },
 
   client: {
+    orders: (params: { estado?: string; page?: number; page_size?: number } = {}) =>
+      request<Paginated<Quote>>(
+        `/cliente/pedidos${queryString(params as Record<string, QueryValue>)}`,
+      ),
     validateCart: (items: CartItem[]) =>
       request<CartValidation>('/cliente/carrito/validar', {
         method: 'POST',
